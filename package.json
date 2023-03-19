@@ -1,0 +1,15 @@
+{
+  "name": "ip-logger",
+  "version": "1.0.0",
+  "description": "A simple IP logger",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "dhooks": "^1.1.5",
+    "request": "^2.88.2",
+    "useragent": "^2.3.0"
+  },
+  "scripts": {
+    "start": "node main.js"
+  }
+}
