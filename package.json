@@ -4,11 +4,11 @@
   "description": "A simple IP logger",
   "main": "main.js",
   "dependencies": {
-    "express": "^4.17.1",
-    "request": "^2.88.2",
+    "express": "^4.18.2",
+    "request": "",
     "useragent": "^2.3.0",
-    "ipinfo": "^4.0.0",
-    "discord-webhook-node": "^1.5.1",
+    "ipinfo": "^1.5.1",
+    "discord-webhook-node": "^1.1.8",
     "dhooks": "^1.1.5"
   },
   "scripts": {
