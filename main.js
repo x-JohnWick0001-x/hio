@@ -38,7 +38,11 @@ app.get('/', async (req, res) => {
     .setColor('#5CDBF0')
     .setTimestamp();
 
-  webhook.send(embed);
+    try {
+      await webhook.send(embed);
+    } catch (error) {
+      console.error(`Error sending webhook: ${error}`);
+    }
 
   res.send('IP address logged');
 });
