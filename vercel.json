@@ -1,17 +1,10 @@
 {
   "version": 2,
   "builds": [
-    { "src": "app.js", "use": "@vercel/node" },
-    { "src": "webhook.js", "use": "@vercel/node" }
+    { "src": "app.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/.*", "dest": "app.js" }
-  ],
-  "env": [ 
-  { "bot_token": "@bot_token",
-    "channel_id": "@channel_id",
-    "ip_token": "@ip_token",
-    "port": "@port" }
+    { "src": "/", "dest": "/app.js" }
   ],
   "buildCommand": "OUTPUT=npm install && npm run build"
 }
