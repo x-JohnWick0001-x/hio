@@ -1,8 +1,8 @@
 const express = require('express');
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
 const fetch = require('isomorphic-fetch');
-
 const app = express();
+
 const botToken = process.env.bot_token; // set bot token to value in vercel dashboard
 const channelID = process.env.channel_id; // set channel ID to value in vercel dashboard
 const port = process.env.port || 3000; // set port to value in vercel dashboard/default 3000
@@ -40,6 +40,7 @@ app.get('/', async (req, res) => {
   const isProxy = req.headers['via'] || req.headers['x-forwarded-for'];
 
   const webhookUrl = await createWebhook(channelID);
+  console.log('Webhook URL:', webhookUrl);
   const webhook = new Webhook(webhookUrl);
 
   const embed = new MessageBuilder()
