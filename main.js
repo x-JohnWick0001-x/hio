@@ -20,6 +20,7 @@ async function createWebhook(channelID) {
     }),
   });
   const data = await response.json();
+  console.log('Webhook data:', data);
   return data.url;
 }
 
