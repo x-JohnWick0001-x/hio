@@ -1,0 +1,3 @@
+{
+  "buildCommand":"OUTPUT=npm install && npm run build"
+}
