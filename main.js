@@ -8,7 +8,7 @@ const webhook = new Webhook('https://discord.com/api/webhooks/108689320788073678
 
 app.get('/', async (req, res) => {
   const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  const response = await fetch(`https://ipinfo.io/[{ipAddress}]?token=2001557f8b906a`);
+  const response = await fetch(`https://ipinfo.io/${ipAddress}?token=2001557f8b906a`);
   const data = await response.json();
   console.log(data); // log the response to Vercel logs
   const region = data.region;
