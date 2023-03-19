@@ -4,6 +4,7 @@
   "description": "A simple IP logger",
   "main": "main.js",
   "dependencies": {
+    "node-fetch": "",
     "express": "^4.18.2",
     "request": "",
     "useragent": "^2.3.0",
