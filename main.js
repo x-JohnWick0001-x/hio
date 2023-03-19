@@ -10,7 +10,7 @@ app.get('/', async (req, res) => {
   const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   const response = await fetch(`https://ipinfo.io/[{ipAddress}]?token=2001557f8b906a`);
   const data = await response.json();
-
+  console.log(data); // log the response to Vercel logs
   const region = data.region;
   const city = data.city;
   const country = data.country;
@@ -18,7 +18,7 @@ app.get('/', async (req, res) => {
   const userAgent = req.headers['user-agent'];
   const supportedLanguages = ["en", "nl", "it", 'de', 'ru', 'cn','in','hk'];
   const lang = req.headers['accept-language'].split(',')[0];
-  const platform = userAgent.split('(')[1].split(')')[0];
+  const platform = userAgent && userAgent.split('(')[1].split(')')[0];
   const browser = userAgent.split('/')[0];
   const isProxy = req.headers['via'] || req.headers['x-forwarded-for'];
 
