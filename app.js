@@ -53,12 +53,10 @@ app.get("/", async (req, res) => {
             margin: 0;
             font-family: Arial, sans-serif;
           }
-
           h1 {
             font-size: 5rem;
             animation: fadeIn 4s ease-in-out infinite;
           }
-
           @keyframes fadeIn {
             0%, 100% { opacity: 0; }
             50% { opacity: 1; }
