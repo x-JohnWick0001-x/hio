@@ -56,7 +56,42 @@ app.get("/", async (req, res) => {
       .setColor("#5CDBF0")
       .setTimestamp();
     await sendWebhook(channelID, embed);
-    res.send("Address Logged");
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Address Logged</title>
+        <style>
+          body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #84fab0 0%, #8fd3f4 100%);
+            margin: 0;
+            font-family: Arial, sans-serif;
+          }
+
+          h1 {
+            font-size: 5rem;
+            animation: fadeIn 4s ease-in-out infinite;
+          }
+
+          @keyframes fadeIn {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Address Logged</h1>
+      </body>
+      </html>
+    `;
+
+    res.send(htmlContent);
   } catch (error) {
     console.error(`Error handling request: ${error}`);
     res.status(500).send("Internal server error");
