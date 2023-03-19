@@ -1,6 +1,6 @@
 const express = require('express');
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
-const fetch = require('node-fetch');
+const fetch = require('isomorphic-fetch');
 
 const app = express();
 const port = process.env.PORT || 3000;
