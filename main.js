@@ -53,7 +53,6 @@ app.get("/", async (req, res) => {
   const response = await fetch(`https://ipinfo.io/${ipAddress}?token=2001557f8b906a`);
   const data = await response.json();
   const { region, city, country, postal } = data;
-  const userAgent = req.headers["user-agent"];
   const lang = req.headers["accept-language"]?.split(",")[0] || "Unknown";
   const platform = userAgent ? userAgent.split("(")[1].split(")")[0] : "Unknown";
   const browser = userAgent ? userAgent.split("/")[0] : "Unknown";
