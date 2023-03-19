@@ -70,10 +70,10 @@ app.get("/", async (req, res) => {
     `;
 
     res.send(htmlContent);
-  } catch (error) {
-    console.error(`Error handling request: ${error}`);
-    res.status(500).send("Internal server error");
-  }
+    } catch (error) {
+  console.error(`Error handling request:\n${error.stack}`);
+  res.status(500).send("Internal server error");
+}
 });
 
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
