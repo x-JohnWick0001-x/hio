@@ -21,7 +21,7 @@
 A: Yes, you can customize the appearance of the page by modifying the `htmlContent` variable in the `app.js` file. Feel free to change the text, styles, or layout to fit your preferences. Moreover, you can change the information captured and sent by the webhook by modifying the `embed` object in the `app.js` file.
 
 **Q: How can I ensure the privacy and security of my captured data?**
-
+ 
 A: To ensure the privacy and security of your captured data, make sure to protect your environment variables, such as Discord bot token, channel ID, and IPinfo.io API token, by storing them securely. Additionally, you can implement user authentication to restrict access to the logged data, ensuring that only authorized users can view the information.
 
 **Q: Can I use this IP Logger in conjunction with other services, such as databases or analytics tools?**
