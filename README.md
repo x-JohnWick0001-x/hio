@@ -99,6 +99,7 @@ Before deploying the application, you need to provide some environment variables
 - `channel_id`: Your Discord channel ID where the webhook should send messages.
 - `bot_token`: Your Discord bot token for creating and managing webhooks.
 - `ip_token`: Your IPinfo.io API token for fetching IP address information.
+- `redirect_url`: The URL where users will be redirected at log completion.
 
 <p align="justify">
 By storing these variables in the Vercel dashboard, you prevent exposing sensitive information and make it easier to manage the variables across different environments (e.g., development, staging, and production).
@@ -119,12 +120,23 @@ You can customize various aspects of your IP Logger to create a unique and perso
 </p>
 <details>
 <summary>Click to expand</summary>
+  </br>
+<p class="minor-space"> • Custom Bot Avatar
+
+You can set a custom avatar for the bot in webhook messages by modifying the `app.js` file. Look for the `const embed = new MessageBuilder()` block and add the `.setAvatar()` method with the URL of your image. Here's an example:
+```javascript
+const embed = new MessageBuilder()
+  ...
+  .setTimestamp()
+  .setAvatar('https://example.com/your-image.png'); // set to custom image url 
+```
+  
 <p class="minor-space"> • <strong> Page Appearance</strong>: Modify the htmlContent variable in the app.js file to change the text, styles, or layout. You can use custom CSS or JavaScript to create unique animations or effects, adjust colors and fonts, or change the overall layout to fit your preferences.</p>
 <p class="minor-space"> • <strong> Webhook Embed</strong>: Customize the data sent by the webhook by modifying the embed object in the app.js file. You can add, remove, or modify fields to change the information displayed, adjust the styling of the embed or create different visuals by using different colors, images, or icons.</p>
 <p class="minor-space"> • <strong> Dynamic Content</strong>: Add dynamic content to your IP Logger by using JavaScript to generate random greetings, images, or messages, or by pulling content from external sources like APIs, databases, or other services. This can provide a more engaging experience for visitors and make your IP Logger stand out.</p>
 <p class="minor-space"> • <strong> Responsive Design</strong>: Ensure that your IP Logger looks great on all devices by implementing a responsive design. You can use CSS media queries, flexbox, or CSS grid to create layouts that adapt to various screen sizes and orientations.</p>
 <p class="minor-space"> • <strong> Additional User Data</strong>: You can extend the data captured by the IP Logger by adding support for more request headers, utilizing JavaScript to collect additional client-side data, or integrating with external APIs to gather more detailed information. This could include data such as browser language, screen resolution, or device type.</p>
-  
+
   <p align="center">
  <strong>Testing, testing:</strong> Thoroughly test your customizations across different browsers and devices. This is the tedious part everyone loves but it is the only way to ensure that your IP Logger remains accessible and functional for everyone so you don't miss your VIP target (:
   </p>
