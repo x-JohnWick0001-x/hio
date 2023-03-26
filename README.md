@@ -11,7 +11,7 @@
 <p align="justify">
   This IP logger uses Discord webhooks to send data to a specified Discord channel. Instead of using a persistent webhook, the application creates a new webhook, sends the data, and then deletes it for each request. This approach is adopted to bypass Discord's rate limiting, which restricts the number of requests a client can make within a certain period. Rate limiting prevents spamming or overloading Discord's API. Thanks to our create-send-delete process, you can enjoy smooth and uninterrupted IP logging without worrying about hitting rate limits! 🚀
 </p>
-
+ 
 <h2 align="center">💬 Frequently Asked Questions (FAQs)</h2>
 
 <details>
