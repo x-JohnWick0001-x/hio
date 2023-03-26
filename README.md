@@ -14,7 +14,7 @@
  
 <h2 align="center">💬 Frequently Asked Questions (FAQs)</h2>
 
-<details>
+<details> 
 <summary>Click to expand</summary>
  
 **Q: Can I customize the appearance and information displayed on the page?**
