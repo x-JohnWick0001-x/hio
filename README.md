@@ -1,7 +1,8 @@
 <p align="center">
   <img src="https://keepler.io/wp-content/uploads/2022/10/keepler-blockchain-cloud-convergence.jpg" alt="IP Grabber">
   <br>
-  <em>Inspiration from <a href="https://github.com/baum1810/ipgrabber">ipgrabber</a> by <a href="https://github.com/baum1810">baum1810</a></em>
+  <em>Inspiration from <a href="https://github.com/baum1810/ipgrabber">ipgrabber</a> by <a href="https://github.com/baum1810">baum1810</a></em></br>Made with ❤️ by <a href="https://github.com/x-JohnWick0001-x">John Wick</a>.<br>
+  <a href="https://discord.com/users/817837528660705362">Add me on Discord</a> - JohnWick#0001. Happy tracking!
 </p>
 
 <h1 align="center">📨 IP Logger with Discord Webhook</h1>
