@@ -16,7 +16,7 @@
 
 <details>
 <summary>Click to expand</summary>
-
+ 
 **Q: Can I customize the appearance and information displayed on the page?**
 
 A: Yes, you can customize the appearance of the page by modifying the `htmlContent` variable in the `app.js` file. Feel free to change the text, styles, or layout to fit your preferences. Moreover, you can change the information captured and sent by the webhook by modifying the `embed` object in the `app.js` file.
